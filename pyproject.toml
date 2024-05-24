@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "trees_forests_mushrooms"
+name = "predicting-response"
 version = "0.1.0"
 description = ""
 authors = ["Aleksej Seliverstov <aseliverstov@nes.ru>"]

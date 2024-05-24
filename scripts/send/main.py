@@ -19,7 +19,7 @@ def main(cfg: DictConfig) -> None:
     api.competition_submit(
         file_name=data_path / cfg.data.file_name,
         message=cfg.data.submit_message,
-        competition="hse-ds-hw1-trees-forests-mushrooms",
+        competition="predicting-response",
     )
 
 

@@ -19,7 +19,7 @@ def main(cfg: DictConfig) -> None:
     api.competition_download_file(
         file_name=cfg.data.file_name,
         path=data_path,
-        competition="hse-ds-hw1-trees-forests-mushrooms",
+        competition="predicting-response",
     )
 
 
