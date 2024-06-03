@@ -36,10 +36,10 @@ def main(cfg: omegaconf.DictConfig) -> None:
     train_data = pd.read_csv(train_path, index_col=0)
     test_data = pd.read_csv(test_path, index_col=0)
 
-    # cfg_dct = omegaconf.OmegaConf.to_container(cfg, resolve=True)
-    # registry = Registry()
-    # registry.add_from_module(src, prefix="src.")
-    # algorithm = registry.get_from_params(**cfg_dct["algorithm"])
+    cfg_dct = omegaconf.OmegaConf.to_container(cfg, resolve=True)
+    registry = Registry()
+    registry.add_from_module(src, prefix="src.")
+    algorithm = registry.get_from_params(**cfg_dct["algorithm"])
 
     np.random.seed(100509)
 
@@ -55,10 +55,10 @@ def main(cfg: omegaconf.DictConfig) -> None:
 
     logger.info("Training...")
 
-    # algorithm.fit(train[FEATURES], train[TARGET])
+    algorithm.fit(train[FEATURES], train[TARGET])
 
-    train["pred"] = train[TARGET].values
-    val["pred"] = val[TARGET].values
+    train["pred"] = algorithm.predict(train[FEATURES].values)
+    val["pred"] = algorithm.predict(val[FEATURES].values)
 
     train_score = calculate_score(train)
     val_score = calculate_score(val)
@@ -67,7 +67,8 @@ def main(cfg: omegaconf.DictConfig) -> None:
     logger.info(f"Val NDCG: {val_score}")
 
     logger.info("Predicting...")
-    pass
+    pred = pd.DataFrame({"event_id": test_data["event_id"], "rank": algorithm.predict(test_data[FEATURES].values)})
+    pred.to_csv(save_path, index=False)
 
 
 if __name__ == "__main__":

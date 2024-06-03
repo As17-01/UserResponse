@@ -1,3 +1,10 @@
 train_key: ../../data/train.csv
 test_key: ../../data/test.csv
 save_key: ../../data/submissions/baseline.csv
+
+algorithm:
+  __target__: src.Model
+  emb_pipeline:
+    __target__: src.EmbeddingPipeline
+    embs:
+      - src.SimilarityEmbedding
