@@ -57,8 +57,8 @@ def main(cfg: omegaconf.DictConfig) -> None:
 
     algorithm.fit(train[FEATURES], train[TARGET])
 
-    train["pred"] = algorithm.predict(train[FEATURES].values)
-    val["pred"] = algorithm.predict(val[FEATURES].values)
+    train["pred"] = algorithm.predict(train[FEATURES])
+    val["pred"] = algorithm.predict(val[FEATURES])
 
     train_score = calculate_score(train)
     val_score = calculate_score(val)
@@ -67,7 +67,7 @@ def main(cfg: omegaconf.DictConfig) -> None:
     logger.info(f"Val NDCG: {val_score}")
 
     logger.info("Predicting...")
-    pred = pd.DataFrame({"event_id": test_data["event_id"], "rank": algorithm.predict(test_data[FEATURES].values)})
+    pred = pd.DataFrame({"event_id": test_data["event_id"], "rank": algorithm.predict(test_data[FEATURES])})
     pred.to_csv(save_path, index=False)
 
 

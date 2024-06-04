@@ -3,8 +3,8 @@ test_key: ../../data/test.csv
 save_key: ../../data/submissions/baseline.csv
 
 algorithm:
-  __target__: src.Model
+  _target_: src.Model
   emb_pipeline:
-    __target__: src.EmbeddingPipeline
+    _target_: src.EmbeddingPipeline
     embs:
-      - src.SimilarityEmbedding
+      - _target_: src.SimilarityEmbedding

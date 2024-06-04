@@ -9,7 +9,7 @@ from tensorflow.keras.layers import Dropout
 from tensorflow.keras.layers import InputLayer
 from tensorflow.keras.models import Sequential
 
-from embeddings import BaseEmbedding
+from src.embeddings import BaseEmbedding
 
 
 class Model:
@@ -19,17 +19,15 @@ class Model:
         # TODO: Add model builder
         self.model = Sequential(
             [
-                InputLayer(shape=(6539,)),
-                Dropout(0.25),
-                Dense(512, activation="relu"),
-                Dropout(0.25),
-                Dense(512, activation="relu"),
-                Dropout(0.25),
-                Dense(256, activation="relu"),
-                Dropout(0.25),
-                Dense(128, activation="relu"),
+                InputLayer(shape=(100,)),
                 Dropout(0.25),
                 Dense(64, activation="relu"),
+                Dropout(0.25),
+                Dense(64, activation="relu"),
+                Dropout(0.25),
+                Dense(32, activation="relu"),
+                Dropout(0.25),
+                Dense(32, activation="relu"),
                 Dropout(0.25),
                 Dense(1, activation="sigmoid"),
             ]
@@ -43,10 +41,12 @@ class Model:
         )
 
     def fit(self, x: pd.DataFrame, y: pd.Series):
-        self.emb_pipeline.fit(x.values, y.values)
-        x_transformed = self.emb_pipeline.transform(x.values)
+        self.emb_pipeline.fit(x, y)
+        x_transformed = self.emb_pipeline.transform(x)
 
-        _ = self.model.fit(x_transformed, y.values, epochs=50, batch_size=32, verbose=1)
+        _ = self.model.fit(x_transformed, y.values, epochs=5, batch_size=32, verbose=1)
 
     def predict(self, x: pd.DataFrame) -> np.ndarray:
-        pass
+        x_transformed = self.emb_pipeline.transform(x)
+        pred = self.model.predict(x_transformed)
+        return pred
